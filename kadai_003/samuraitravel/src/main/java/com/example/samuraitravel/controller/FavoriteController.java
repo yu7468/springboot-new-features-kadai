@@ -35,6 +35,8 @@ public class FavoriteController {
         Page<Favorite> favoritePage = favoriteService.findFavoritesByUser(user,pageable);
         
         model.addAttribute("favoritePage", favoritePage);
+        model.addAttribute("currentPage", pageable.getPageNumber());
+        model.addAttribute("totalPages", favoritePage.getTotalPages());
 
         return "favorites/index";
     } 
