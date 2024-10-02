@@ -25,6 +25,9 @@
                                      <li class="breadcrumb-item active" aria-current="page">民宿詳細</li>
                                  </ol>
                              </nav> 
+							<div th:if="${successMessage}" class="alert alert-info">
+								<span th:text="${successMessage}"></span>
+							</div> 
                              
 							<div th:if="${#authentication.principal != null}" class="d-flex justify-content-end">
 							    <!-- お気に入り追加のフォーム -->

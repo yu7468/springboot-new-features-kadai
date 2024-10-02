@@ -45,10 +45,16 @@ public class ReviewController {
 	}  
     
     @GetMapping("/houses/{id}/reviews/post")
-    public String post(@PathVariable("id") Integer houseId, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+    public String post(@PathVariable("id") Integer houseId, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model, RedirectAttributes redirectAttributes) {
         
         House house = houseRepository.getReferenceById(houseId);
         User user = userDetailsImpl.getUser(); 
+        
+        boolean hasReviewed = reviewService.hasUserReviewedHouse(houseId, user.getId());
+        if (hasReviewed) {
+            redirectAttributes.addFlashAttribute("errorMessage", "すでにこの宿にレビューを投稿しています。");
+            return "redirect:/houses/" + houseId;  
+        }
         
         ReviewPostForm reviewPostForm = new ReviewPostForm(house.getId(), user.getId(), null, "");
         model.addAttribute("reviewPostForm", reviewPostForm);
@@ -64,11 +70,17 @@ public class ReviewController {
         }
         House house = houseRepository.getReferenceById(houseId);
         User user = userRepository.getReferenceById(userId);
+        
+        boolean hasReviewed = reviewService.hasUserReviewedHouse(houseId, userId);
+        if (hasReviewed) {
+            redirectAttributes.addFlashAttribute("errorMessage", "すでにこの宿にレビューを投稿しています。");
+            return "redirect:/houses/" + houseId;
+        }
 
         reviewService.create(reviewPostForm, house, user);
         redirectAttributes.addFlashAttribute("successMessage", "レビューが投稿しました。");
 
-        return "redirect:/";
+        return "redirect:/houses/" + houseId;
     }
 
     @GetMapping("/reviews/list/{houseId}")

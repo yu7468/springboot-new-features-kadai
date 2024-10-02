@@ -27,6 +27,9 @@
 							</ol>
 						</nav>
 						
+						<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+							<span th:text="${errorMessage}"></span>
+						</div>
 						<h1 class="mb-4 text-center" th:text="${house.getName()} + 'のレビュー投稿'"></h1>
 						<form method="post"  th:action="@{/reviews/create}" th:object="${reviewPostForm}">
 							<input type="hidden" th:field="*{houseId}" />

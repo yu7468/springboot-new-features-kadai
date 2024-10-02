@@ -53,6 +53,10 @@ public class ReviewService {
     public void delete(Integer id) {
         reviewRepository.deleteById(id);
     }
+	
+	public boolean hasUserReviewedHouse(Integer houseId, Integer userId) {
+	    return reviewRepository.existsByHouseIdAndUserId(houseId, userId);
+	}
 
 	
 

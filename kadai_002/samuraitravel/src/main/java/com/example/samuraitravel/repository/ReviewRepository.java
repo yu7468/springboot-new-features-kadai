@@ -13,6 +13,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	
 	List<Review> findByHouse(House house);
 	Page<Review> findByHouse(House house, Pageable pageable);
+	
+	boolean existsByHouseIdAndUserId(Integer houseId, Integer userId);
 
 
 	}
